@@ -1,16 +1,21 @@
+Unity 2020.1.11f1
+
 As a designer I like facing challenges and had fun working on this one.
-I worked after work untill I could. Not as much as I wanted.
+I worked after work until I could. Not as much as I wanted.
 
 The setup was pretty easy to do.
 The major issues came out about shuffling the deck and moving the cards.
 
 I think the shuffle is working but not showing due to some problem in the subset creation 
-(as you can see, only one card is showing at the time I'm writing this).
+(It was showing only onw card because it was updating the prefab and then adding it to the list).
+I've tried to debug it looking online, but according to the references online the code should be ok.
+The error was solved by instantiate the modified prefab and then adding it to the list. 
+This way it works as the console shows and the debug deck confirms.
 
-About moving the cards, It actually works, but on the debug card only, as the code is not recognizing all the others 
-by the tag. Working on it.
-
-
+About moving the cards, at the beginning it actually worked, but only on the debug card only. 
+I tried differents methods that I thought were more efficients and elegants, 
+but at the end the one that worked better was a simple for loop.
+It still has some bug, because it needs to properly detect one card at time.
 
 
 If I had more time I would have cared more about the graphic part and the UX, considering some microanimations 

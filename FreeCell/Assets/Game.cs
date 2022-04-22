@@ -36,7 +36,6 @@ public class Game : MonoBehaviour
     
 
 
-    // Start is called before the first frame update
     void Awake()
     {
         header = card.transform.GetChild(0).GetComponent<Text>();
@@ -70,7 +69,8 @@ public class Game : MonoBehaviour
             main.text = "clubs " + i.ToString();
             header.color = Color.black;
             main.color = Color.black;
-            clubs.Add(card);
+            GameObject inst = Instantiate(card, new Vector3((canvas.GetComponent<RectTransform>().sizeDelta.x/2),380+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            clubs.Add(inst);
         }
 
         for (int i=1; i<14; i++) {
@@ -78,7 +78,8 @@ public class Game : MonoBehaviour
             main.text = "diamonds " + i.ToString();
             header.color = Color.red;
             main.color = Color.red;
-            diamonds.Add(card);
+            GameObject inst = Instantiate(card, new Vector3((canvas.GetComponent<RectTransform>().sizeDelta.x/2),380+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            diamonds.Add(inst);
         }
 
         for (int i=1; i<14; i++) {
@@ -86,7 +87,8 @@ public class Game : MonoBehaviour
             main.text = "spades " + i.ToString();
             header.color = Color.black;
             main.color = Color.black;
-            spades.Add(card);
+            GameObject inst = Instantiate(card, new Vector3((canvas.GetComponent<RectTransform>().sizeDelta.x/2),380+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            spades.Add(inst);
         }
 
         //sth wrong here...
@@ -95,14 +97,19 @@ public class Game : MonoBehaviour
             main.text = "hearts " + i.ToString();
             header.color = Color.red;
             main.color = Color.red;
-            hearts.Add(card); //probably here, not sure
+            GameObject inst = Instantiate(card, new Vector3((canvas.GetComponent<RectTransform>().sizeDelta.x/2),380+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            hearts.Add(inst); //probably here, not sure
         }
 
         //create deck
         deck = clubs.Concat(diamonds).Concat(hearts).Concat(spades).ToList();
+        /*for(int i=0; i<deck.Count; i++){
+            Debug.Log(deck[i].gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text);
+        }*/
+        
+        ShuffleDeck();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(gameStarted)
@@ -112,19 +119,38 @@ public class Game : MonoBehaviour
                 Debug.Log("Over UI elements");
             }*/
 
-            card = GameObject.FindWithTag("CardSample");
-            localMousePosition = card.GetComponent<RectTransform>().InverseTransformPoint(Input.mousePosition);
-            if (card.GetComponent<RectTransform>().rect.Contains(localMousePosition) && Input.GetMouseButton(0))
-            {
-                card.transform.position = Input.mousePosition;
+            GameObject[] cards = GameObject.FindGameObjectsWithTag("CardSample");//improve for the right below card, not all
+            for(int i=0; i< cards.Length; i++) {
+                localMousePosition = cards[i].GetComponent<RectTransform>().InverseTransformPoint(Input.mousePosition);
+                    if (cards[i].GetComponent<RectTransform>().rect.Contains(localMousePosition) && Input.GetMouseButton(0))
+                {
+                    cards[i].transform.position = Input.mousePosition;
+                }
             }
+
+            //check if the last card chars are numbers, if is a 1, you can move it to the foundation
+            //else you can move it to the freecell only
+
+            //check if the card is black o red
+            //check if you're moving it over one of the same color
+            
         }   
     }
 
     public void ShuffleDeck() {
         //shuffle deck
-        shuffleDeck = deck.OrderBy( x => Random.value ).ToList();
-
+        //shuffleDeck = deck.OrderBy( x => Random.value ).ToList(); //not actually working
+        for (int i = 0; i < deck.Count; i++) {
+            var temp = deck[i];
+            int randomIndex = Random.Range(i, deck.Count);
+            deck[i] = deck[randomIndex];
+            deck[randomIndex] = temp;
+        }
+        shuffleDeck = deck;
+        
+        /*for(int i=0; i<shuffleDeck.Count; i++){
+            Debug.Log(shuffleDeck[i].gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text);
+        }*/
         SpawnCards();
     }
 
@@ -136,6 +162,7 @@ public class Game : MonoBehaviour
             }
         }
 
+        //create columns
         firstColumn = shuffleDeck.GetRange(0,7);
         secondColumn = shuffleDeck.GetRange(7,7);
         thirdColumn = shuffleDeck.GetRange(14,7);
@@ -146,28 +173,30 @@ public class Game : MonoBehaviour
         eighthColumn = shuffleDeck.GetRange(46,6);
 
         for(int i=0; i<firstColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(-525+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            //Debug.Log(firstColumn[i].gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text);
+            Instantiate(firstColumn[i], new Vector3(-525+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
-        for(int i=0; i<secondColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(-375+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+        for(int i=0; i<secondColumn.Count; i++) {
+            //Debug.Log(secondColumn[i].gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text); 
+            Instantiate(secondColumn[i], new Vector3(-375+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
         for(int i=0; i<thirdColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(-225+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            Instantiate(thirdColumn[i], new Vector3(-225+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
         for(int i=0; i<fourthColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(-75+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            Instantiate(fourthColumn[i], new Vector3(-75+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
         for(int i=0; i<fifthColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(75+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            Instantiate(fifthColumn[i], new Vector3(75+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
         for(int i=0; i<sixthColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(225+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            Instantiate(sixthColumn[i], new Vector3(225+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
         for(int i=0; i<seventhColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(375+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            Instantiate(seventhColumn[i], new Vector3(375+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
         for(int i=0; i<eighthColumn.Count; i++) { 
-            Instantiate(shuffleDeck[i], new Vector3(525+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
+            Instantiate(eighthColumn[i], new Vector3(525+(canvas.GetComponent<RectTransform>().sizeDelta.x/2),157-(20*i)+(canvas.GetComponent<RectTransform>().sizeDelta.y/2),0), Quaternion.identity, canvas.transform);
         }
 
         gameStarted = true;

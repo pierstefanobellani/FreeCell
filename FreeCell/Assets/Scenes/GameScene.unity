@@ -182,7 +182,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -373,12 +373,12 @@ GameObject:
   - component: {fileID: 96750858}
   - component: {fileID: 96750857}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Button (debug)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &96750856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -396,8 +396,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -485}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0.000022888, y: -473}
+  m_SizeDelta: {x: 303.1432, y: 56.839348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &96750857
 MonoBehaviour:
@@ -2132,11 +2132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5645089880706653654, guid: 59c69399f0201ef47b8e1d8260c47ca5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -54.225
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5645089880706653654, guid: 59c69399f0201ef47b8e1d8260c47ca5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 396
+      value: 380
       objectReference: {fileID: 0}
     - target: {fileID: 5645089880706653654, guid: 59c69399f0201ef47b8e1d8260c47ca5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2172,7 +2172,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5645089880706653655, guid: 59c69399f0201ef47b8e1d8260c47ca5, type: 3}
       propertyPath: m_Name
-      value: CardSample
+      value: CardSample (debug)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645089880706653655, guid: 59c69399f0201ef47b8e1d8260c47ca5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59c69399f0201ef47b8e1d8260c47ca5, type: 3}
