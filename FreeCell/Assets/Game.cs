@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class Game : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Game : MonoBehaviour
     List<GameObject> hearts;
     List<GameObject> spades;
     List<GameObject> deck;
-    public List<GameObject> shuffleDeck;
+    List<GameObject> shuffleDeck;
 
     bool gameStarted = false;
     GameObject canvas;
@@ -88,12 +89,13 @@ public class Game : MonoBehaviour
             spades.Add(card);
         }
 
+        //sth wrong here...
         for (int i=1; i<14; i++) {
             header.text = "hearts " + i.ToString();
             main.text = "hearts " + i.ToString();
             header.color = Color.red;
             main.color = Color.red;
-            hearts.Add(card);
+            hearts.Add(card); //probably here, not sure
         }
 
         //create deck
@@ -105,14 +107,17 @@ public class Game : MonoBehaviour
     {
         if(gameStarted)
         {
-                localMousePosition = GameObject.FindWithTag("CardSample").GetComponent<RectTransform>().InverseTransformPoint(Input.mousePosition);
-                if (GameObject.FindWithTag("CardSample").GetComponent<RectTransform>().rect.Contains(localMousePosition) && Input.GetMouseButton(0))
-                {
-                    Debug.Log("ciao");
-                    firstColumn[firstColumn.Count-1].transform.position = Input.mousePosition;
-                    //GameObject.FindWithTag("CardSample").transform.position = Input.mousePosition;
-                }
-         
+            /*if (EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log("Over UI elements");
+            }*/
+
+            card = GameObject.FindWithTag("CardSample");
+            localMousePosition = card.GetComponent<RectTransform>().InverseTransformPoint(Input.mousePosition);
+            if (card.GetComponent<RectTransform>().rect.Contains(localMousePosition) && Input.GetMouseButton(0))
+            {
+                card.transform.position = Input.mousePosition;
+            }
         }   
     }
 
